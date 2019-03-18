@@ -1,0 +1,33 @@
+virt-install
+qemu-kvm
+libvirt
+start libvirtd
+vmx
+/proc/cpuinfo
+svm
+/proc/cpuinfo
+usermod -aG libvirt
+add type bridge ifname nm-bridge1
+add type bridge-slave
+master nm-bridge1
+bridge1 ipv4.method auto
+delete em1
+up bridge1
+qemu-img
+-f qcow2 
+--bootproto=dhcp --device=em1 --ipv6=auto --activate
+getty@ttyS0.service
+--disk path=/var/lib/libvirt/images/hw4.qcow2
+"--graphics spice,password=pwd "
+--location=/var/lib/libvirt/images/CentOS-7-x86_64-Minimal-1708.iso
+--network bridge=nm-bridge1
+--initrd-inject=/root/hw4-anaconda.cfg
+"--extra-args ""inst.ks=file:/hw4-anaconda.cfg"""
+virsh list
+virsh destroy 
+virsh shutdown 
+virsh undefine 
+virsh domiflist 
+virsh detach-interface 
+virsh edit 
+virsh console 
